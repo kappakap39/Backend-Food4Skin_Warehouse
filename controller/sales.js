@@ -15,7 +15,7 @@ export const selectSales = (req, res) => {
 
 //add sales
 export const addsales = (req, res) => {
-    const sql = "INSERT INTO `sales`(`districts`, `ID_sales`, `fullname`, `mail`, `password`, `sex`, `IDcard`, `province`, `amphures`, `AddressSale`, `Tel`, `Persistent_status`, `contact`, `picture`, `zipcode`) VALUES (?)";
+    const sql = "INSERT INTO `sales`(`districts`, `ID_sales`, `fullname`, `mail`, `password`, `sex`, `IDcard`, `province`, `subdistricts`, `AddressSale`, `Tel`, `Persistent_status`, `contact`, `picture`, `zip_code`) VALUES (?)";
     const values =[
         req.body.districts,
         req.body.ID_sales,
@@ -25,13 +25,13 @@ export const addsales = (req, res) => {
         req.body.sex,
         req.body.IDcard,
         req.body.province,
-        req.body.amphures,
+        req.body.subdistricts,
         req.body.AddressSale,
         req.body.Tel,
         req.body.Persistent_status,
         req.body.contact,
         req.body.picture,
-        req.body.zipcode
+        req.body.zip_code
     ];
     db.query(sql, [values], (err, result) => {
         if(err) return res.json(err);
@@ -67,7 +67,7 @@ export const getupdateSale = (req, res) => {
 
 export const saleUpdate =(req, res) => {
     const id =req.params.id;
-    const sql = "UPDATE `sales` SET `districts`=?,`fullname`=?,`mail`=?,`password`=?,`sex`=?,`IDcard`=?,`province`=? ,`amphures`=? ,`AddressSale`=? ,`Tel`=? ,`Persistent_status`=?, `contact`=?, `picture`=?, `zipcode`=? WHERE `ID_sales` = ?";
+    const sql = "UPDATE `sales` SET `districts`=?,`fullname`=?,`mail`=?,`password`=?,`sex`=?,`IDcard`=?,`province`=? ,`subdistricts`=? ,`AddressSale`=? ,`Tel`=? ,`Persistent_status`=?, `contact`=?, `picture`=?, `zip_code`=? WHERE `ID_sales` = ?";
 
     db.query(
         sql,[
@@ -78,13 +78,13 @@ export const saleUpdate =(req, res) => {
         req.body.sex,
         req.body.IDcard,
         req.body.province,
-        req.body.amphures,
+        req.body.subdistricts,
         req.body.AddressSale,
         req.body.Tel,
         req.body.Persistent_status,
         req.body.contact,
         req.body.picture,
-        req.body.zipcode,
+        req.body.zip_code,
         id,
         ],
 

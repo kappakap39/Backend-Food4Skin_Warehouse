@@ -1,7 +1,7 @@
 import db from "../db.js";
 
 export const provinces = (req, res) => {
-    const sql = "SELECT * FROM `provinces` ";
+    const sql = "SELECT * FROM `provinces`";
     db.query(sql, (err, result) => {
         if (err) return res.json({
             Message: "Error inside server"
@@ -10,8 +10,8 @@ export const provinces = (req, res) => {
     });
 };
 
-export const amphures =(req, res) => {
-    const sql = "SELECT * FROM `amphures` WHERE province_id = ?";
+export const districts =(req, res) => {
+    const sql = "SELECT * FROM `districts` WHERE `province_id` = ?";
     const {id} = req.params;
 
     db.query(sql, [id], (err, result) => {
@@ -24,11 +24,11 @@ export const amphures =(req, res) => {
     });
 };
 
-export const districts = (req, res) => {
-    const sql = " SELECT * FROM `districts` WHERE amphure_id = ?";
-    const {amphure_id} = req.params;
+export const subdistricts = (req, res) => {
+    const sql = "SELECT * FROM `subdistricts` WHERE `district_id` = ?";
+    const {district_id} = req.params;
     
-    db.query(sql, [amphure_id], (err, result)=> {
+    db.query(sql, [district_id], (err, result)=> {
         if (err) {
             return res.json({
                 Message: "Error inside server"
