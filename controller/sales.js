@@ -39,7 +39,7 @@ export const addsales = (req, res) => {
     });
 }
 
-
+//show one sales
 export const showdatasale =(req, res) => {
 
     const sql = "SELECT * FROM sales WHERE ID_sales = ? ";
@@ -51,7 +51,7 @@ export const showdatasale =(req, res) => {
 
 }
 
-
+//update
 export const getupdateSale = (req, res) => {
     
     const sql = "SELECT * FROM `sales` WHERE `ID_sales` = ?";
@@ -97,6 +97,7 @@ export const saleUpdate =(req, res) => {
     )
 };
 
+//delete
 export const deleteSales = (req, res) => {
     const sql = "DELETE FROM `sales` WHERE `ID_sales` = ?";
     const ID_sales = req.params.ID_sales;

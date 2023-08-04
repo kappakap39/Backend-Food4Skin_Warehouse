@@ -9,7 +9,7 @@ import deleteSales from "./routes/sales.js";
 
 import provinces from "./routes/provinces.js";
 
-// import selectlot from ".//routes/lot.js";
+import selectlot from "./routes/lot.js";
 
 const app = express();
 app.use(express.json());
@@ -29,7 +29,7 @@ app.use("/",saleUpdate)
 
 app.use("/",deleteSales)
 
-// app.use("/",selectlot)
+app.use("/",selectlot)
 
 app.listen(2001,() => {
     console.log("Run server complete");

@@ -7,8 +7,9 @@ import {showdatasale} from "../controller/sales.js"
 import {deleteSales} from "../controller/sales.js"
 
 const router = express.Router();
-
+//http://localhost:2001/showall
 router.get("/showall",selectSales);
+
 router.post("/addsale",addsales);
 
 router.get("/datasale/:ID_sales",showdatasale);

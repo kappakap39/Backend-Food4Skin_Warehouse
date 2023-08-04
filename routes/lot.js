@@ -1,6 +1,9 @@
-// import express from "express";
-// import {selectlot} from "../controller/lot.js"
+import express from "express";
+import {selectlot} from "../controller/lot.js"
 
-// const router = express.Router();
+const router = express.Router();
 
-// router.get("/selectlot",selectlot);
+//http://localhost:2001/selectlot
+router.get("/selectlot",selectlot);
+
+export default router
