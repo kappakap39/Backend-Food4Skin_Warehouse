@@ -5,11 +5,13 @@ import {getupdateSale} from "../controller/sales.js"
 import {saleUpdate} from "../controller/sales.js"
 import {showdatasale} from "../controller/sales.js"
 import {deleteSales} from "../controller/sales.js"
+import {loginsales} from "../controller/sales.js"
 
 const router = express.Router();
 //http://localhost:2001/showall
 router.get("/showall",selectSales);
 
+//http://localhost:2001/addsale
 router.post("/addsale",addsales);
 
 router.get("/datasale/:ID_sales",showdatasale);
@@ -22,5 +24,8 @@ router.put("/saleUpdate/:id",saleUpdate);
 
 //http://localhost:2001/deleteSales
 router.delete("/deleteSales/:ID_sales",deleteSales);
+
+//http://localhost:2001/loginsales
+router.post("/loginsales",loginsales);
 
 export default router
