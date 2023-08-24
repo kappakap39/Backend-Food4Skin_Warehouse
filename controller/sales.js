@@ -118,9 +118,9 @@ export const showdatasale = (req, res) => {
         ) AS Card_ID
     FROM sales
     WHERE ID_sales = ?`;
-    
+
     const ID_sales = req.params.ID_sales;
-    
+
     db.query(sql, [ID_sales], (err, dataRead) => {
         if (err) {
             return res.json({ Message: "Error inside server" });
@@ -231,13 +231,27 @@ export const deleteSales = (req, res) => {
 
 //login Sales
 export const loginsales = (req, res) => {
-    const sql = "SELECT * FROM `sales` WHERE `email`=? AND `password`=? ";
+    // const sql = "SELECT * FROM `sales` WHERE `email`=? AND `password`=? ";
+    // db.query(sql, [req.body.email, req.body.password], (err, data) => {
+    //     if (err) return res.json("Error login");
+    //     if (data.length > 0) {
+    //         return res.json("Success");
+    //     } else {
+    //         return res.json("No record");
+    //     }
+    // });
+    const sql = "SELECT * FROM `sales` WHERE `email`=? AND `password`=? AND `Persistent_status`='กำลังดำเนินงานอยู่'";
     db.query(sql, [req.body.email, req.body.password], (err, data) => {
-        if (err) return res.json("Error login");
+        if (err) {
+            return res.json("Error login");
+        }
+
         if (data.length > 0) {
             return res.json("Success");
         } else {
             return res.json("No record");
         }
     });
+
+
 };
