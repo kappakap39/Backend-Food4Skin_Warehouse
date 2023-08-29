@@ -3,7 +3,9 @@ import cors from "cors";
 import salesall from "./routes/sales.js";
 import addsalesall from "./routes/sales.js";
 import getupdateSale from "./routes/sales.js";
+import getupdateAdmin from "./routes/admin.js";
 import saleUpdate from "./routes/sales.js";
+import adminUpdate from "./routes/admin.js";
 import showdatasale from "./routes/sales.js";
 import deleteSales from "./routes/sales.js";
 import provinces from "./routes/provinces.js";
@@ -25,8 +27,10 @@ app.use("/datasales",showdatasale)
 app.use("/provinces",provinces)
 
 app.use("/",getupdateSale)
+app.use("/",getupdateAdmin)
 
 app.use("/",saleUpdate)
+app.use("/",adminUpdate)
 
 app.use("/",deleteSales)
 

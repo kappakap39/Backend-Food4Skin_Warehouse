@@ -241,17 +241,32 @@ export const loginsales = (req, res) => {
     //     }
     // });
     const sql = "SELECT * FROM `sales` WHERE `email`=? AND `password`=? AND `Persistent_status`='กำลังดำเนินงานอยู่'";
-    db.query(sql, [req.body.email, req.body.password], (err, data) => {
-        if (err) {
-            return res.json("Error login");
-        }
 
+    db.query(sql, [req.body.email, req.body.password ], (err, data) => {
         if (data.length > 0) {
-            return res.json("Success");
+            const filteredData = data.map(item => ({
+                ID_sales: item.ID_sales,
+                email: item.email,
+                fullname: item.fullname,
+                password: item.password,
+                sex: item.sex,
+                IDcard: item.IDcard,
+                province: item.province,
+                districts: item.districts,
+                subdistricts: item.subdistricts,
+                AddressSale: item.AddressSale,
+                Tel: item.Tel,
+                contact: item.contact,
+                picture: item.picture,
+                zip_code: item.zip_code,
+                Persistent_status: item.Persistent_status,
+                // คอลัมน์อื่นๆ ที่คุณต้องการ
+                Success: "Success",
+            }));
+            return res.json(filteredData);
         } else {
             return res.json("No record");
-        }
-    });
+        } 
 
-
+    })
 };
