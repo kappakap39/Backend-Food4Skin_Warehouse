@@ -16,10 +16,10 @@ router.post("/addsale",addsales);
 
 router.get("/datasale/:ID_sales",showdatasale);
 
-//http://localhost:2001/getupdateSale/getupdateSale/
+//http://localhost:2001/getupdateSale/:id
 router.get("/getupdateSale/:id",getupdateSale);
 
-//http://localhost:2001/saleUpdate/saleUpdate/
+//http://localhost:2001/saleUpdate/:id
 router.put("/saleUpdate/:id",saleUpdate);
 
 //http://localhost:2001/deleteSales
@@ -27,5 +27,6 @@ router.delete("/deleteSales/:ID_sales",deleteSales);
 
 //http://localhost:2001/loginsales
 router.post("/loginsales",loginsales);
+
 
 export default router

@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import salesall from "./routes/sales.js";
 import addsalesall from "./routes/sales.js";
+
 import getupdateSale from "./routes/sales.js";
 import getupdateAdmin from "./routes/admin.js";
 import saleUpdate from "./routes/sales.js";
@@ -14,11 +15,14 @@ import selectlot from "./routes/lot.js";
 import loginadmin from "./routes/admin.js";
 import loginsales from "./routes/sales.js";
 
+import product  from "./routes/product.js";
+
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 app.use("/",salesall)
+app.use("/",product)
 
 app.use("/addsale",addsalesall)
 
