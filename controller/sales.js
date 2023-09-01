@@ -242,31 +242,47 @@ export const loginsales = (req, res) => {
     // });
     const sql = "SELECT * FROM `sales` WHERE `email`=? AND `password`=? AND `Persistent_status`='กำลังดำเนินงานอยู่'";
 
-    db.query(sql, [req.body.email, req.body.password ], (err, data) => {
+    db.query(sql, [req.body.email, req.body.password], (err, data) => {
         if (data.length > 0) {
-            const filteredData = data.map(item => ({
-                ID_sales: item.ID_sales,
-                email: item.email,
-                fullname: item.fullname,
-                password: item.password,
-                sex: item.sex,
-                IDcard: item.IDcard,
-                province: item.province,
-                districts: item.districts,
-                subdistricts: item.subdistricts,
-                AddressSale: item.AddressSale,
-                Tel: item.Tel,
-                contact: item.contact,
-                picture: item.picture,
-                zip_code: item.zip_code,
-                Persistent_status: item.Persistent_status,
-                // คอลัมน์อื่นๆ ที่คุณต้องการ
-                Success: "Success",
-            }));
+            const filteredData = data.map(item => {
+                // เพิ่มขีด (-) ใน IDcard เพื่อสร้าง Card_ID
+                const formattedIDcard = item.IDcard.replace(/(\d)(?=(\d{4})+(?!\d))/g, "$1-");
+                const Card_ID = formattedIDcard.slice(0, -1) + "-" + formattedIDcard.slice(-1);
+
+                // แยกหมายเลขโทรศัพท์ตามรูปแบบ
+                const formattedTel = item.Tel.length === 9 ?
+                    item.Tel.replace(/(\d{2})(\d{3})(\d{4})/, "$1-$2-$3") :
+                    item.Tel.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+
+                return {
+                    ID_sales: item.ID_sales,
+                    email: item.email,
+                    fullname: item.fullname,
+                    password: item.password,
+                    sex: item.sex,
+                    IDcard: item.IDcard,
+                    province: item.province,
+                    districts: item.districts,
+                    subdistricts: item.subdistricts,
+                    AddressSale: item.AddressSale,
+                    Tel: item.Tel,
+                    contact: item.contact,
+                    picture: item.picture,
+                    zip_code: item.zip_code,
+                    Persistent_status: item.Persistent_status,
+                    PhoneNumber: formattedTel, // ใช้เบอร์โทรศัพท์ที่แยกแล้ว
+                    Card_ID: Card_ID,
+
+                    // คอลัมน์อื่นๆ ที่คุณต้องการ
+                    Success: "Success",
+                };
+            });
+
             return res.json(filteredData);
         } else {
             return res.json("No record");
-        } 
+        }
 
     })
 };
+

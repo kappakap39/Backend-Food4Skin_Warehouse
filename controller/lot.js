@@ -12,14 +12,17 @@ import db from "../db.js";
 
 
 export const selectlot = (req, res) => {
-    const sql = "SELECT * FROM `lotproduct` JOIN product ON product.ID_product = lotproduct.ID_product ORDER BY `ID_lot` DESC"
-    db.query(sql, (err, result) => {
-        if (err) return res.json({ message: "error run result all Lot" });
+    const sql = "SELECT * FROM `lotproduct` INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales INNER JOIN product ON product.ID_product = lotproduct.ID_product ORDER BY `ID_lot` DESC";
 
-        // Convert the result to JSON string
-        const resultText = JSON.stringify(result);
+    const id = req.params.id;
 
-        return res.send(resultText);
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            return res.json({
+                Message: "Error inside server",
+            });
+        }
+        return res.json(result);
     });
 }
 
