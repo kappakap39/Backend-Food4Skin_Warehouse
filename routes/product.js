@@ -6,7 +6,7 @@ const router = express.Router();
 //http://localhost:2001/Showproduct
 router.get("/Showproduct",Showproduct);
 
-//http://localhost:2001/Showproduct
+//http://localhost:2001/Showtableproduct
 router.get("/Showtableproduct",Showtableproduct);
 
 //http://localhost:2001/addproduct
