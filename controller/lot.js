@@ -9,10 +9,26 @@ export const lot = (req, res) => {
 
     })
 }
-
-
+//!ไม่มีการเช็คเวลา
+// SELECT * FROM `lotproduct` INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales INNER JOIN product ON product.ID_product = lotproduct.ID_product ORDER BY `ID_lot` DESC
+//!แสดงแค่วันที่ยังไม่หมดอายุ
+// SELECT * FROM `lotproduct`
+// INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales
+// INNER JOIN product ON product.ID_product = lotproduct.ID_product
+// WHERE `date_list_EXP` >= NOW()
+// ORDER BY `ID_lot` DESC
+//!แสดงวันที่ผ่านมาแล้ว
+// SELECT * FROM `lotproduct`
+// INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales
+// INNER JOIN product ON product.ID_product = lotproduct.ID_product
+// WHERE `date_list_EXP` < CURDATE()
+// ORDER BY `ID_lot` DESC
 export const selectlot = (req, res) => {
-    const sql = "SELECT * FROM `lotproduct` INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales INNER JOIN product ON product.ID_product = lotproduct.ID_product ORDER BY `ID_lot` DESC";
+    const sql = `SELECT * FROM lotproduct
+    INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales
+    INNER JOIN product ON product.ID_product = lotproduct.ID_product
+    WHERE date_list_EXP >= NOW()
+    ORDER BY ID_lot DESC`;
 
     const id = req.params.id;
 
