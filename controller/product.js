@@ -49,7 +49,9 @@ export const productOne = (req, res) => {
 
 //update showone product
 export const productOneUP = (req, res) => {
-    const sql = `SELECT * FROM product WHERE ID_product = ?`;
+    const sql = `SELECT * FROM product
+    INNER JOIN sales ON sales.ID_sales = product.ID_sales
+    WHERE  ID_product = ?`;
 
     const ID_product = req.params.ID_product;
 
