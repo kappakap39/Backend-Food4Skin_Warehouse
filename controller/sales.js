@@ -286,3 +286,29 @@ export const loginsales = (req, res) => {
     })
 };
 
+//!ตรวจสอบข้อมูล IDcard
+export const checkDuplicateIDcard = (req, res) => {
+    const IDcard = req.params.IDcard;
+
+    if (!IDcard) {
+        return res.status(400).json({ message: "กรุณาส่งค่า IDcard" });
+    }
+
+    const sql = "SELECT * FROM sales WHERE IDcard = ?";
+    db.query(sql, [IDcard], (err, result) => {
+        if (err) {
+            console.error("เกิดข้อผิดพลาดในการทำคำสั่ง SQL: " + err.message);
+            return res.status(500).json({ message: "เกิดข้อผิดพลาดในการตรวจสอบ IDcard" });
+        }
+        
+        if (result.length > 0) {
+            // IDcard ซ้ำ
+            return res.json({ message: "IDcard ซ้ำ" });
+        } else {
+            // IDcard ไม่ซ้ำ
+            return res.json({ message: "IDcard ไม่ซ้ำ" });
+        }
+    });
+};
+
+
