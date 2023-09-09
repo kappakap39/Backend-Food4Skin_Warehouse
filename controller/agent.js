@@ -185,3 +185,14 @@ export const agentUpdate = (req, res) => {
         }
     );
 };
+
+//select all NameAgent
+export const NameAgent = (req, res) => {
+
+    const sql = "SELECT DISTINCT(  `fullname`  ),`ID_agent` FROM agent"
+    db.query(sql, (err, result) => {
+        if (err) return res.json({ message: "error run result all" });
+        return res.json(result);
+
+    })
+}

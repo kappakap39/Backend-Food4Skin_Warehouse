@@ -66,15 +66,13 @@ export const selectlotExport = (req, res) => {
             requisition.Dete_requisition,
             requisition.remark,
             sales.fullname AS sales_fullname,
-            product.Name_product AS product_name,
+            Nameproduct AS product_name,
             agent.fullname AS agent_fullname,
             requisition.Amount_products
         FROM
             requisition
         INNER JOIN
             sales ON sales.ID_sales = requisition.ID_sales
-        INNER JOIN
-            product ON product.ID_product = requisition.ID_product
         INNER JOIN
             agent ON agent.ID_agent = requisition.ID_agent
         INNER JOIN
@@ -125,6 +123,20 @@ export const NameProduct = (req, res) => {
     })
 }
 
+export const Lotforproduct =(req, res) => {
+    const sql = "SELECT * FROM `lotproduct` WHERE `ID_product` = ?";
+    const {id} = req.params;
+
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            return res.json({
+                Message: "Error inside server"
+            });
+        }
+        return res.json(result);
+    });
+};
+
 
 
 export const ShowProduct = (req, res) => {
@@ -156,7 +168,7 @@ export const ShowProductTAB = (req, res) => {
     });
 };
 export const ShowProductImport = (req, res) => {
-    const sql = "SELECT * FROM `lotproduct` INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales INNER JOIN product ON product.ID_product = lotproduct.ID_product WHERE product.Name_product =?  ORDER BY `ID_lot` DESC";
+    const sql = "SELECT * FROM `lotproduct` INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales INNER JOIN product ON product.ID_product = lotproduct.ID_product WHERE Nameproduct =?  ORDER BY `ID_lot` DESC";
 
     const id = req.params.id;
 
@@ -176,15 +188,13 @@ export const ShowProductTABExport = (req, res) => {
             requisition.Dete_requisition,
             requisition.remark,
             sales.fullname AS sales_fullname,
-            product.Name_product AS product_name,
+            Nameproduct AS product_name,
             agent.fullname AS agent_fullname,
             requisition.Amount_products
         FROM
             requisition
         INNER JOIN
             sales ON sales.ID_sales = requisition.ID_sales
-        INNER JOIN
-            product ON product.ID_product = requisition.ID_product
         INNER JOIN
             agent ON agent.ID_agent = requisition.ID_agent
         INNER JOIN
@@ -228,6 +238,26 @@ export const addproductLOT = (req, res) => {
         return res.json(result);
     });
 };
+//!add Requisition
+export const addRequisition = (req, res) => {
+    const sql =
+        "INSERT INTO `requisition` (`ID_requisition`,`Dete_requisition`,`Amount_products`,`remark`,`ID_sales`,`ID_agent`, `ID_lot`, `Nameproduct`) VALUES (?)";
+    const values = [
+
+        req.body.ID_requisition,
+        req.body.Dete_requisition,
+        req.body.Amount_products,
+        req.body.remark,
+        req.body.ID_sales,
+        req.body.ID_agent,
+        req.body.ID_lot,
+        req.body.Nameproduct,
+    ];
+    db.query(sql, [values], (err, result) => {
+        if (err) return res.json(err);
+        return res.json(result);
+    });
+};
 
 //update showone lot
 export const Showlot = (req, res) => {
@@ -245,28 +275,3 @@ export const Showlot = (req, res) => {
         return res.json(dataRead);
     });
 };
-
-
-//! ตารางการเบิก
-// SELECT
-//     lotproduct.ID_lot,
-//     requisition.Dete_requisition,
-//     requisition.remark,
-//     sales.fullname,
-//     product.Name_product,
-//     agent.fullname AS nameagent,
-//     requisition.Amount_products
-// FROM
-//     requisition
-// INNER JOIN
-//     sales ON sales.ID_sales = requisition.ID_sales
-// INNER JOIN
-//     product ON product.ID_product = requisition.ID_product
-// INNER JOIN
-//     agent ON agent.ID_agent = requisition.ID_agent
-// INNER JOIN
-//     lotproduct ON lotproduct.ID_lot = requisition.ID_lot
-// WHERE 
-//     requisition.Dete_requisition <= CURRENT_DATE()  -- กรองเฉพาะวันที่ไม่เกินปัจจุบัน
-// ORDER BY
-//     requisition.Dete_requisition DESC;  -- เรียงลำดับจากวันที่สูงสุดไปต่ำสุด
