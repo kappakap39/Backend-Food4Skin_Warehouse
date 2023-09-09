@@ -82,7 +82,7 @@ export const selectlotExport = (req, res) => {
         WHERE 
             requisition.Dete_requisition <= CURRENT_DATE()
         ORDER BY
-            requisition.Dete_requisition DESC;
+        ID_requisition DESC;
     `;
 
     const id = req.params.id;
@@ -214,8 +214,7 @@ INNER JOIN
     lotproduct ON lotproduct.ID_lot = requisition.ID_lot
 WHERE Nameproduct = ? AND
     requisition.Dete_requisition <= CURRENT_DATE()
-ORDER BY
-    requisition.Dete_requisition DESC;
+ORDER BY ID_requisition DESC;
     `;
 
     const id = req.params.id;
