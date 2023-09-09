@@ -42,11 +42,13 @@ export const selectlot = (req, res) => {
     });
 }
 export const selectlotExpire = (req, res) => {
-    const sql = `SELECT * FROM lotproduct
+    const sql = `SELECT *
+    FROM lotproduct
     INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales
     INNER JOIN product ON product.ID_product = lotproduct.ID_product
     WHERE date_list_EXP < CURDATE()
-    ORDER BY ID_lot DESC`;
+    ORDER BY date_list_EXP DESC;
+    `;
 
     const id = req.params.id;
 
@@ -66,7 +68,7 @@ export const selectlotExport = (req, res) => {
             requisition.Dete_requisition,
             requisition.remark,
             sales.fullname AS sales_fullname,
-            Nameproduct AS product_name,
+            Nameproduct AS Name_product,
             agent.fullname AS agent_fullname,
             requisition.Amount_products
         FROM
@@ -123,9 +125,14 @@ export const NameProduct = (req, res) => {
     })
 }
 
-export const Lotforproduct =(req, res) => {
-    const sql = "SELECT * FROM `lotproduct` WHERE `ID_product` = ?";
-    const {id} = req.params;
+export const Lotforproduct = (req, res) => {
+    const sql = `SELECT * 
+    FROM lotproduct 
+    WHERE Inventories_lot >= 1 
+      AND ID_product = ? 
+      AND date_list_EXP >= CURDATE();
+    `;
+    const { id } = req.params;
 
     db.query(sql, [id], (err, result) => {
         if (err) {
@@ -154,7 +161,13 @@ export const ShowProduct = (req, res) => {
     });
 };
 export const ShowProductTAB = (req, res) => {
-    const sql = "SELECT * FROM `lotproduct` INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales INNER JOIN product ON product.ID_product = lotproduct.ID_product WHERE product.Name_product =?  AND date_list_EXP < CURDATE() ORDER BY `ID_lot` DESC";
+    const sql = `SELECT *
+    FROM lotproduct
+    INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales
+    INNER JOIN product ON product.ID_product = lotproduct.ID_product
+    WHERE product.Name_product = ?
+      AND date_list_EXP < CURDATE()
+    ORDER BY date_list_EXP DESC`;
 
     const id = req.params.id;
 
@@ -168,7 +181,7 @@ export const ShowProductTAB = (req, res) => {
     });
 };
 export const ShowProductImport = (req, res) => {
-    const sql = "SELECT * FROM `lotproduct` INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales INNER JOIN product ON product.ID_product = lotproduct.ID_product WHERE Nameproduct =?  ORDER BY `ID_lot` DESC";
+    const sql = "SELECT * FROM `lotproduct` INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales INNER JOIN product ON product.ID_product = lotproduct.ID_product WHERE Name_product =?  ORDER BY `ID_lot` DESC";
 
     const id = req.params.id;
 
@@ -183,26 +196,26 @@ export const ShowProductImport = (req, res) => {
 };
 export const ShowProductTABExport = (req, res) => {
     const sql = `
-        SELECT
-            lotproduct.ID_lot,
-            requisition.Dete_requisition,
-            requisition.remark,
-            sales.fullname AS sales_fullname,
-            Nameproduct AS product_name,
-            agent.fullname AS agent_fullname,
-            requisition.Amount_products
-        FROM
-            requisition
-        INNER JOIN
-            sales ON sales.ID_sales = requisition.ID_sales
-        INNER JOIN
-            agent ON agent.ID_agent = requisition.ID_agent
-        INNER JOIN
-            lotproduct ON lotproduct.ID_lot = requisition.ID_lot
-        WHERE product.Name_product =? AND
-            requisition.Dete_requisition <= CURRENT_DATE()
-        ORDER BY
-            requisition.Dete_requisition DESC;
+    SELECT
+    lotproduct.ID_lot,
+    requisition.Dete_requisition,
+    requisition.remark,
+    sales.fullname AS sales_fullname,
+    Nameproduct AS Name_product,
+    agent.fullname AS agent_fullname,
+    requisition.Amount_products
+FROM
+    requisition
+INNER JOIN
+    sales ON sales.ID_sales = requisition.ID_sales
+INNER JOIN
+    agent ON agent.ID_agent = requisition.ID_agent
+    INNER JOIN
+    lotproduct ON lotproduct.ID_lot = requisition.ID_lot
+WHERE Nameproduct = ? AND
+    requisition.Dete_requisition <= CURRENT_DATE()
+ORDER BY
+    requisition.Dete_requisition DESC;
     `;
 
     const id = req.params.id;
@@ -274,4 +287,26 @@ export const Showlot = (req, res) => {
         }
         return res.json(dataRead);
     });
+};
+
+
+//! update lot
+export const lotUpdate = (req, res) => {
+    const id = req.params.id;
+    const sql = "UPDATE lotproduct SET `Inventories_lot`=? WHERE `ID_lot` = ?";
+
+    db.query(
+        sql,
+        [
+            req.body.Inventories_lot,
+            id,
+        ],
+
+        (err, result) => {
+            if (err) {
+                return res.json({ Message: " Error inside server" });
+            }
+            return res.json(result);
+        }
+    );
 };
