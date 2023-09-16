@@ -228,7 +228,41 @@ ORDER BY ID_requisition DESC;
         return res.json(result);
     });
 };
+export const ShowProductLOT = (req, res) => {
+    const sql = `
+    SELECT
+    lotproduct.ID_lot,
+    requisition.Dete_requisition,
+    requisition.remark,
+    sales.fullname AS sales_fullname,
+    Nameproduct AS Name_product,
+    agent.fullname AS agent_fullname,
+    requisition.Amount_products,
+    ID_requisition
+FROM
+    requisition
+INNER JOIN
+    sales ON sales.ID_sales = requisition.ID_sales
+INNER JOIN
+    agent ON agent.ID_agent = requisition.ID_agent
+    INNER JOIN
+    lotproduct ON lotproduct.ID_lot = requisition.ID_lot
+WHERE requisition.ID_lot = ? AND
+    requisition.Dete_requisition <= CURRENT_DATE()
+ORDER BY ID_requisition DESC;
+    `;
 
+    const id = req.params.id;
+
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            return res.json({
+                Message: "Error inside server",
+            });
+        }
+        return res.json(result);
+    });
+};
 
 //!add product
 export const addproductLOT = (req, res) => {
@@ -253,23 +287,25 @@ export const addproductLOT = (req, res) => {
 //!add Requisition
 export const addRequisition = (req, res) => {
     const sql =
-        "INSERT INTO `requisition` (`ID_requisition`,`Dete_requisition`,`Amount_products`,`remark`,`ID_sales`,`ID_agent`, `ID_lot`, `Nameproduct`) VALUES (?)";
+      "INSERT INTO `requisition` (`Dete_requisition`,`Amount_products`,`remark`,`ID_sales`,`ID_agent`, `ID_lot`, `Nameproduct`) VALUES (?)";
     const values = [
-
-        req.body.ID_requisition,
-        req.body.Dete_requisition,
-        req.body.Amount_products,
-        req.body.remark,
-        req.body.ID_sales,
-        req.body.ID_agent,
-        req.body.ID_lot,
-        req.body.Nameproduct,
+      req.body.Dete_requisition,
+      req.body.Amount_products,
+      req.body.remark,
+      req.body.ID_sales,
+      req.body.ID_agent,
+      req.body.ID_lot,
+      req.body.Nameproduct,
     ];
     db.query(sql, [values], (err, result) => {
-        if (err) return res.json(err);
+        if (err) {
+          console.error("Error inserting data:", err);
+          return res.status(500).json({ error: "An error occurred while inserting data" });
+        }
         return res.json(result);
-    });
-};
+      });      
+  };
+  
 
 //update showone lot
 export const Showlot = (req, res) => {
