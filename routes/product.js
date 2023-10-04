@@ -1,5 +1,5 @@
 import express from "express";
-import {addproduct, Showproduct, productOne, productOneUP, productUpdate, deleteproduct, Showtableproduct} from "../controller/product.js"
+import {addproduct, Showproduct, productOne, productOneUP, productUpdate, deleteproduct, Showtableproduct, ShowtableproductReport, productReport} from "../controller/product.js"
 
 const router = express.Router();
 
@@ -8,6 +8,12 @@ router.get("/Showproduct",Showproduct);
 
 //http://localhost:2001/Showtableproduct
 router.get("/Showtableproduct",Showtableproduct);
+
+//http://localhost:2001/ShowtableproductReport
+router.get("/ShowtableproductReport",ShowtableproductReport);
+
+//http://localhost:2001/productReport
+router.get("/productReport/:id",productReport);
 
 //http://localhost:2001/addproduct
 router.post("/addproduct",addproduct);

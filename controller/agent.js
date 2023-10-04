@@ -189,10 +189,28 @@ export const agentUpdate = (req, res) => {
 //select all NameAgent
 export const NameAgent = (req, res) => {
 
-    const sql = "SELECT DISTINCT(  `fullname`  ),`ID_agent` FROM agent"
+    const sql = "SELECT DISTINCT(  `fullname`  ),`ID_agent`,`province`,`districts`,`subdistricts`,`zip_code`,`Address`,`Tel` FROM agent"
+    // const sql = "SELECT DISTINCT(  `fullname`  ),`ID_agent` FROM agent"
     db.query(sql, (err, result) => {
         if (err) return res.json({ message: "error run result all" });
         return res.json(result);
 
     })
 }
+//select all NameAgentAddress
+export const NameAgentAD = (req, res) => {
+
+    const sql = `SELECT DISTINCT(  fullname  ),ID_agent,province,districts,subdistricts,zip_code,Address,Tel,level FROM agent 
+    WHERE ID_agent = ?`    
+    // const sql = "SELECT DISTINCT(  `fullname`  ),`ID_agent` FROM agent"
+    const id = req.params.id;
+
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            return res.json({
+                Message: "Error inside server",
+            });
+        }
+        return res.json(result);
+    });
+};

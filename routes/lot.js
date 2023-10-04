@@ -1,11 +1,13 @@
 import express from "express";
 import {selectlot, NameProduct, ShowProduct, addproductLOT, lot, Showlot, selectlotExpire, ShowProductTAB, selectTABImport,
-    ShowProductTABExport, ShowProductImport, selectlotExport, addRequisition, Lotforproduct, lotUpdate, ShowProductLOT} from "../controller/lot.js"
+    ShowProductTABExport, ShowProductImport, selectlotExport, addRequisition, Lotforproduct, lotUpdate, ShowProductLOT, BillOd, PR_LOTID} from "../controller/lot.js"
 
 const router = express.Router();
 
 //http://localhost:2001/lot
 router.get("/lot",lot);
+//http://localhost:2001/BillOd
+router.get("/BillOd",BillOd);
 
 //http://localhost:2001/selectlot
 router.get("/selectlot",selectlot);
@@ -23,6 +25,8 @@ router.get("/selectlotExport",selectlotExport);
 router.get("/NameProduct",NameProduct);
 //http://localhost:2001/Lotforproduct/:id
 router.get("/Lotforproduct/:id", Lotforproduct);
+//http://localhost:2001/PR_LOTID/:id
+router.get("/PR_LOTID/:id", PR_LOTID);
 
 //http://localhost:2001/ShowProduct/:id
 router.get("/ShowProduct/:id",ShowProduct);

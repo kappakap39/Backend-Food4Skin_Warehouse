@@ -113,3 +113,57 @@ export const Showtableproduct = (req, res) => {
 
     })
 }
+export const ShowtableproductReport = (req, res) => {
+
+    // const sql = "SELECT product.ID_product,product.Name_product,product.Production_point,product.Retail_price,product.Level_1_price,product.Level_2_price,product.Level_3_price, sales.fullname FROM `product` INNER JOIN sales ON product.ID_sales = sales.ID_sales ORDER BY `ID_product` DESC"
+    const sql = `SELECT product.Name_product,
+    product.Production_point,
+    product.Retail_price,
+    product.Level_1_price,
+    product.Level_2_price,
+    product.Level_3_price,
+           SUM(lotproduct.Inventories_lot) AS TotalInventories
+    FROM lotproduct
+    INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales
+    INNER JOIN product ON product.ID_product = lotproduct.ID_product
+    WHERE lotproduct.date_list_EXP >= NOW() 
+      AND lotproduct.date_list_EXP >= CURDATE() 
+      AND lotproduct.Inventories_lot  > 0
+    GROUP BY lotproduct.ID_product
+    ORDER BY TotalInventories ASC;`
+    db.query(sql, (err, result) => {
+        if (err) return res.json({ message: "error run result all" });
+        return res.json(result);
+
+    })
+}
+export const productReport = (req, res) => {
+
+    // const sql = "SELECT product.ID_product,product.Name_product,product.Production_point,product.Retail_price,product.Level_1_price,product.Level_2_price,product.Level_3_price, sales.fullname FROM `product` INNER JOIN sales ON product.ID_sales = sales.ID_sales ORDER BY `ID_product` DESC"
+    const sql = `SELECT product.Name_product,
+    product.Production_point,
+    product.Retail_price,
+    product.Level_1_price,
+    product.Level_2_price,
+    product.Level_3_price,
+           SUM(lotproduct.Inventories_lot) AS TotalInventories
+    FROM lotproduct
+    INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales
+    INNER JOIN product ON product.ID_product = lotproduct.ID_product
+    WHERE lotproduct.date_list_EXP >= NOW() 
+      AND lotproduct.date_list_EXP >= CURDATE() 
+      AND lotproduct.Inventories_lot  > 0
+      AND product.Name_product = ?
+    GROUP BY lotproduct.ID_product
+    ORDER BY lotproduct.ID_product ASC;`
+    const id = req.params.id;
+
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            return res.json({
+                Message: "Error inside server",
+            });
+        }
+        return res.json(result);
+    });
+}

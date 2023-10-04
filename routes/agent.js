@@ -1,5 +1,5 @@
 import express from "express";
-import {showTableagent, addagent, getupdateAgent, agentUpdate, getAgent, NameAgent} from "../controller/agent.js"
+import {showTableagent, addagent, getupdateAgent, agentUpdate, getAgent, NameAgent, NameAgentAD} from "../controller/agent.js"
 
 const router = express.Router();
 
@@ -20,5 +20,8 @@ router.put("/agentUpdate/:id",agentUpdate);
 
 //http://localhost:2001/NameAgent
 router.get("/NameAgent",NameAgent);
+
+//http://localhost:2001/NameAgentAD/:id
+router.get("/NameAgentAD/:id",NameAgentAD);
 
 export default router
