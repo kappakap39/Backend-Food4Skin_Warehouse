@@ -99,9 +99,7 @@ INNER JOIN
 INNER JOIN
     lotproduct ON lotproduct.ID_lot = requisition.ID_lot
 INNER JOIN
-    product ON product.ID_product = product.ID_product
-WHERE 
-    requisition.Dete_requisition <= CURRENT_DATE()
+    product ON product.ID_product = requisition.ID_product
 ORDER BY
 ID_requisition DESC;
     `;
@@ -330,7 +328,7 @@ export const addproductLOT = (req, res) => {
 //!add Requisition
 export const addRequisition = (req, res) => {
     const sql =
-        "INSERT INTO `requisition` (`Dete_requisition`,`Amount_products`,`remark`,`ID_sales`,`ID_agent`, `ID_lot`, `ID_product`) VALUES (?)";
+        "INSERT INTO `requisition` (`Dete_requisition`,`Amount_products`,`remark`,`ID_sales`,`ID_agent`, `ID_lot`, `Bill` , `ID_product`) VALUES (?)";
     const values = [
         req.body.Dete_requisition,
         req.body.Amount_products,
@@ -339,6 +337,7 @@ export const addRequisition = (req, res) => {
         req.body.ID_agent,
         req.body.ID_lot,
         req.body.ID_product,
+        req.body.Bill,
     ];
     db.query(sql, [values], (err, result) => {
         if (err) {
