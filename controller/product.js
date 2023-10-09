@@ -122,7 +122,8 @@ export const ShowtableproductReport = (req, res) => {
     product.Level_1_price,
     product.Level_2_price,
     product.Level_3_price,
-           SUM(lotproduct.Inventories_lot) AS TotalInventories
+    SUM(lotproduct.Inventories_lot) AS TotalInventories,
+    product.ID_product
     FROM lotproduct
     INNER JOIN sales ON sales.ID_sales = lotproduct.ID_sales
     INNER JOIN product ON product.ID_product = lotproduct.ID_product

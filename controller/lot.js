@@ -330,14 +330,16 @@ export const addRequisition = (req, res) => {
     const sql =
         "INSERT INTO `requisition` (`Dete_requisition`,`Amount_products`,`remark`,`ID_sales`,`ID_agent`, `ID_lot`, `Bill` , `ID_product`) VALUES (?)";
     const values = [
+        
         req.body.Dete_requisition,
         req.body.Amount_products,
         req.body.remark,
         req.body.ID_sales,
         req.body.ID_agent,
         req.body.ID_lot,
-        req.body.ID_product,
         req.body.Bill,
+        req.body.ID_product,
+        
     ];
     db.query(sql, [values], (err, result) => {
         if (err) {
