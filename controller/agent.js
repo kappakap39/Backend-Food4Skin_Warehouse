@@ -25,7 +25,9 @@ export const showTableagent = (req, res) => {
         SUBSTRING(IDcard, 11, 2), '-',
         SUBSTRING(IDcard, 13)
     ) AS Card_ID
-FROM agent ORDER BY ID_agent DESC`;
+FROM agent
+WHERE ID_agent >=21
+ORDER BY ID_agent DESC`;
 
     const ID_agent = req.params.ID_agent;
 
@@ -201,7 +203,7 @@ export const NameAgent = (req, res) => {
 export const NameAgentAD = (req, res) => {
 
     const sql = `SELECT DISTINCT(  fullname  ),ID_agent,province,districts,subdistricts,zip_code,Address,Tel,level FROM agent 
-    WHERE ID_agent = ?`    
+    WHERE ID_agent = ?`
     // const sql = "SELECT DISTINCT(  `fullname`  ),`ID_agent` FROM agent"
     const id = req.params.id;
 

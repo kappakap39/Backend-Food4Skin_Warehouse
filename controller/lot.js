@@ -272,17 +272,24 @@ export const ShowProductLOT = (req, res) => {
     const sql = `
     SELECT
     lotproduct.ID_lot,
+    lotproduct.Lot_ID,
+    lotproduct.Inventories_lot,
+    lotproduct.date_list,
+    lotproduct.date_import,
     requisition.Dete_requisition,
     requisition.remark,
     sales.fullname AS sales_fullname,
-    Nameproduct AS Name_product,
+    product.Name_product AS Name_product,
     agent.fullname AS agent_fullname,
     requisition.Amount_products,
+    requisition.Bill,
     ID_requisition
 FROM
     requisition
 INNER JOIN
     sales ON sales.ID_sales = requisition.ID_sales
+    INNER JOIN
+    product ON product.ID_product = requisition.ID_product
 INNER JOIN
     agent ON agent.ID_agent = requisition.ID_agent
     INNER JOIN
