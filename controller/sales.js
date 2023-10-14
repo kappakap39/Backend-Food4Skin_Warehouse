@@ -65,6 +65,9 @@ export const selectSales = (req, res) => {
 
 //add sales
 export const addsales = (req, res) => {
+
+    // const fs = require('fs');
+    // const Img = '../Img/';
     const sql =
         "INSERT INTO `sales`(`districts`, `ID_sales`, `fullname`, `email`, `password`, `sex`, `IDcard`, `province`, `subdistricts`, `AddressSale`, `Tel`, `Persistent_status`, `contact`, `picture`, `zip_code`) VALUES (?)";
     const values = [
@@ -88,6 +91,9 @@ export const addsales = (req, res) => {
         if (err) return res.json(err);
         return res.json(result);
     });
+    // const pic = req.body.picture;
+    // const picbast64 = Buffer.from(pic, 'base64')
+    // console.log("picbast64",picbast64)
 };
 
 //show one sales
