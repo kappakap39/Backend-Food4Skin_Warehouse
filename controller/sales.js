@@ -1,5 +1,5 @@
 import db from "../db.js";
-
+import { v4 as uuidv4 } from 'uuid';
 //select all sales
 // export const selectSales = (req, res) => {
 
@@ -63,11 +63,8 @@ export const selectSales = (req, res) => {
     });
 };
 
-//add sales
+//!add sales
 export const addsales = (req, res) => {
-
-    // const fs = require('fs');
-    // const Img = '../Img/';
     const sql =
         "INSERT INTO `sales`(`districts`, `ID_sales`, `fullname`, `email`, `password`, `sex`, `IDcard`, `province`, `subdistricts`, `AddressSale`, `Tel`, `Persistent_status`, `contact`, `picture`, `zip_code`) VALUES (?)";
     const values = [
@@ -91,10 +88,59 @@ export const addsales = (req, res) => {
         if (err) return res.json(err);
         return res.json(result);
     });
-    // const pic = req.body.picture;
-    // const picbast64 = Buffer.from(pic, 'base64')
-    // console.log("picbast64",picbast64)
+    const pic = req.body.picture;
+    const picbast64 = Buffer.from(pic, 'base64')
+    console.log("picbast64",picbast64)
 };
+
+// export const addsales = (req, res) => {
+//     // Handle file upload
+//     const pictureFile = req.body.picture; // Assuming you are using a file upload library (e.g., multer)
+//     console.log("pictureFile", pictureFile)
+
+//     // Generate a unique filename (UUID)
+//     const filename = `${uuidv4()}.jpg`; // You can adjust the file extension as needed
+
+//     // Define the file path to save the uploaded picture
+//     const filePath = `ImgUP/${filename}`;
+
+//     // Save the picture to the server
+//     pictureFile.mv(filePath, (err) => {
+//         if (err) {
+//             return res.status(500).json({ error: 'Failed to upload the picture' });
+//         }
+
+//         // Now, you can save the filename (UUID) in the database
+//         const sql = "INSERT INTO `sales`(`districts`, `ID_sales`, `fullname`, `email`, `password`, `sex`, `IDcard`, `province`, `subdistricts`, `AddressSale`, `Tel`, `Persistent_status`, `contact`, `picture`, `zip_code`) VALUES (?)";
+//         const values = [
+//             req.body.districts,
+//             req.body.ID_sales,
+//             req.body.fullname,
+//             req.body.email,
+//             req.body.password,
+//             req.body.sex,
+//             req.body.IDcard,
+//             req.body.province,
+//             req.body.subdistricts,
+//             req.body.AddressSale,
+//             req.body.Tel,
+//             req.body.Persistent_status,
+//             req.body.contact,
+//             filename, // Save the UUID in the 'picture' field
+//             req.body.zip_code,
+//         ];
+
+//         db.query(sql, [values], (dbErr, result) => {
+//             if (dbErr) {
+//                 // Handle the database error
+//                 return res.status(500).json({ error: 'Failed to insert data into the database' });
+//             }
+
+//             // Send a success response
+//             return res.status(200).json({ message: 'Data inserted successfully' });
+//         });
+//     });
+// };
 
 //show one sales
 export const showdatasale = (req, res) => {
@@ -306,7 +352,7 @@ export const checkDuplicateIDcard = (req, res) => {
             console.error("เกิดข้อผิดพลาดในการทำคำสั่ง SQL: " + err.message);
             return res.status(500).json({ message: "เกิดข้อผิดพลาดในการตรวจสอบ IDcard" });
         }
-        
+
         if (result.length > 0) {
             // IDcard ซ้ำ
             return res.json({ message: "IDcard ซ้ำ" });
