@@ -1,5 +1,7 @@
 import db from "../db.js";
 import { v4 as uuidv4 } from 'uuid';
+import fs from 'fs'
+import shortid  from 'shortid'
 //select all sales
 // export const selectSales = (req, res) => {
 
@@ -94,53 +96,51 @@ export const addsales = (req, res) => {
 };
 
 // export const addsales = (req, res) => {
-//     // Handle file upload
-//     const pictureFile = req.body.picture; // Assuming you are using a file upload library (e.g., multer)
-//     console.log("pictureFile", pictureFile)
+//     // const basename = shortid.generate();
+//     const sql =
+//     "INSERT INTO `sales`(`districts`, `ID_sales`, `fullname`, `email`, `password`, `sex`, `IDcard`, `province`, `subdistricts`, `AddressSale`, `Tel`, `Persistent_status`, `contact`, `picture`, `zip_code`) VALUES (?)";
+//     const values = [
+//         req.body.districts,
+//         req.body.ID_sales,
+//         req.body.fullname,
+//         req.body.email,
+//         req.body.password,
+//         req.body.sex,
+//         req.body.IDcard,
+//         req.body.province,
+//         req.body.subdistricts,
+//         req.body.AddressSale,
+//         req.body.Tel,
+//         req.body.Persistent_status,
+//         req.body.contact,
+//         req.body.picture,
+//         req.body.zip_code,
+//     ];
+//     console.log("req.body.picture",req.body.picture)
+//     // Save the image to a folder
+//     const imageBase64 = req.body.picture;
+//     const imageBuffer = Buffer.from(imageBase64, 'base64');
 
-//     // Generate a unique filename (UUID)
-//     const filename = `${uuidv4()}.jpg`; // You can adjust the file extension as needed
+//     const imageFolderPath = 'ImgUP/'; // Specify the folder where you want to save the images
+//     const imageFileName = `${req.body.picture}.jpg`; // You can use the UUID as the filename
 
-//     // Define the file path to save the uploaded picture
-//     const filePath = `ImgUP/${filename}`;
+//     const imagePath = `${imageFolderPath}${imageFileName}`;
 
-//     // Save the picture to the server
-//     pictureFile.mv(filePath, (err) => {
-//         if (err) {
-//             return res.status(500).json({ error: 'Failed to upload the picture' });
-//         }
+//     // Write the image data to the file
+//     fs.writeFileSync(imagePath, imageBuffer);
 
-//         // Now, you can save the filename (UUID) in the database
-//         const sql = "INSERT INTO `sales`(`districts`, `ID_sales`, `fullname`, `email`, `password`, `sex`, `IDcard`, `province`, `subdistricts`, `AddressSale`, `Tel`, `Persistent_status`, `contact`, `picture`, `zip_code`) VALUES (?)";
-//         const values = [
-//             req.body.districts,
-//             req.body.ID_sales,
-//             req.body.fullname,
-//             req.body.email,
-//             req.body.password,
-//             req.body.sex,
-//             req.body.IDcard,
-//             req.body.province,
-//             req.body.subdistricts,
-//             req.body.AddressSale,
-//             req.body.Tel,
-//             req.body.Persistent_status,
-//             req.body.contact,
-//             filename, // Save the UUID in the 'picture' field
-//             req.body.zip_code,
-//         ];
-
-//         db.query(sql, [values], (dbErr, result) => {
-//             if (dbErr) {
-//                 // Handle the database error
-//                 return res.status(500).json({ error: 'Failed to insert data into the database' });
-//             }
-
-//             // Send a success response
-//             return res.status(200).json({ message: 'Data inserted successfully' });
-//         });
+//     // Add the image path to the SQL values array
+//     values.push(imagePath);
+//     db.query(sql, [values], (err, result) => {
+//         if (err) return res.json(err);
+//         return res.json(result);
 //     });
+//     // const pic = req.body.picture;
+//     // const picbast64 = Buffer.from(pic, 'base64')
+//     // console.log("picbast64",picbast64)
 // };
+
+
 
 //show one sales
 export const showdatasale = (req, res) => {
