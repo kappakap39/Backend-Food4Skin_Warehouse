@@ -100,8 +100,10 @@ INNER JOIN
     lotproduct ON lotproduct.ID_lot = requisition.ID_lot
 INNER JOIN
     product ON product.ID_product = requisition.ID_product
+WHERE
+	requisition.ID_sales = ?
 ORDER BY
-ID_requisition DESC;
+    ID_requisition DESC;
     `;
 
     const id = req.params.id;
@@ -260,6 +262,45 @@ ORDER BY ID_requisition DESC;
     const id = req.params.id;
 
     db.query(sql, [id], (err, result) => {
+        if (err) {
+            return res.json({
+                Message: "Error inside server",
+            });
+        }
+        return res.json(result);
+    });
+};
+export const ShowProductTABExport2 = (req, res) => {
+    const sql = `
+    SELECT
+    lotproduct.ID_lot,
+    lotproduct.Lot_ID,
+    requisition.Dete_requisition,
+    lotproduct.date_import,
+    requisition.remark,
+    requisition.Bill,
+    sales.fullname AS sales_fullname,
+    product.Name_product AS Name_product,
+    agent.fullname AS agent_fullname,
+    requisition.Amount_products
+FROM
+    requisition
+INNER JOIN
+    sales ON sales.ID_sales = requisition.ID_sales
+INNER JOIN
+    agent ON agent.ID_agent = requisition.ID_agent
+INNER JOIN
+    lotproduct ON lotproduct.ID_lot = requisition.ID_lot
+INNER JOIN product ON requisition.ID_product = product.ID_product
+WHERE Name_product = ? AND requisition.ID_sales = ? AND
+    requisition.Dete_requisition <= CURRENT_DATE()
+ORDER BY ID_requisition DESC;
+    `;
+
+    const idnamepr = req.params.idnamepr;
+    const id = req.params.id;
+
+    db.query(sql, [idnamepr, id], (err, result) => {
         if (err) {
             return res.json({
                 Message: "Error inside server",
