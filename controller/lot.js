@@ -78,18 +78,39 @@ export const selectlotExpire = (req, res) => {
     });
 }
 export const selectlotExport = (req, res) => {
+//     const sql = `
+//     SELECT
+//     lotproduct.ID_lot,
+//     lotproduct.Lot_ID,
+//     requisition.Dete_requisition,
+//     lotproduct.date_import,
+//     requisition.remark,
+//     sales.fullname AS sales_fullname,
+//     product.Name_product AS Name_product,
+//     agent.fullname AS agent_fullname,
+//     requisition.Amount_products,
+//     requisition.Bill
+// FROM
+//     requisition
+// INNER JOIN
+//     sales ON sales.ID_sales = requisition.ID_sales
+// INNER JOIN
+//     agent ON agent.ID_agent = requisition.ID_agent
+// INNER JOIN
+//     lotproduct ON lotproduct.ID_lot = requisition.ID_lot
+// INNER JOIN
+//     product ON product.ID_product = requisition.ID_product
+// WHERE
+// 	requisition.ID_sales = ?
+// ORDER BY
+//     ID_requisition DESC;
+//     `;
     const sql = `
     SELECT
-    lotproduct.ID_lot,
-    lotproduct.Lot_ID,
+    DISTINCT(requisition.Bill),
     requisition.Dete_requisition,
-    lotproduct.date_import,
-    requisition.remark,
     sales.fullname AS sales_fullname,
-    product.Name_product AS Name_product,
-    agent.fullname AS agent_fullname,
-    requisition.Amount_products,
-    requisition.Bill
+    agent.fullname AS agent_fullname
 FROM
     requisition
 INNER JOIN
@@ -101,9 +122,10 @@ INNER JOIN
 INNER JOIN
     product ON product.ID_product = requisition.ID_product
 WHERE
-	requisition.ID_sales = ?
+    requisition.ID_sales = 1
 ORDER BY
-    ID_requisition DESC;
+    requisition.ID_requisition DESC;
+
     `;
 
     const id = req.params.id;
@@ -273,16 +295,10 @@ ORDER BY ID_requisition DESC;
 export const ShowProductTABExport2 = (req, res) => {
     const sql = `
     SELECT
-    lotproduct.ID_lot,
-    lotproduct.Lot_ID,
+    DISTINCT(requisition.Bill),
     requisition.Dete_requisition,
-    lotproduct.date_import,
-    requisition.remark,
-    requisition.Bill,
     sales.fullname AS sales_fullname,
-    product.Name_product AS Name_product,
-    agent.fullname AS agent_fullname,
-    requisition.Amount_products
+    agent.fullname AS agent_fullname
 FROM
     requisition
 INNER JOIN
@@ -291,7 +307,8 @@ INNER JOIN
     agent ON agent.ID_agent = requisition.ID_agent
 INNER JOIN
     lotproduct ON lotproduct.ID_lot = requisition.ID_lot
-INNER JOIN product ON requisition.ID_product = product.ID_product
+INNER JOIN
+    product ON product.ID_product = requisition.ID_product
 WHERE Name_product = ? AND requisition.ID_sales = ? AND
     requisition.Dete_requisition <= CURRENT_DATE()
 ORDER BY ID_requisition DESC;
@@ -338,6 +355,30 @@ INNER JOIN
 WHERE requisition.ID_lot = ? AND
     requisition.Dete_requisition <= CURRENT_DATE()
 ORDER BY ID_requisition DESC;
+    `;
+
+    const id = req.params.id;
+
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            return res.json({
+                Message: "Error inside server",
+            });
+        }
+        return res.json(result);
+    });
+};
+export const ShowProductBill = (req, res) => {
+    const sql = `
+    SELECT  requisition.Bill , requisition.Dete_requisition, agent.fullname as agent_fullname, sales.fullname as sales_fullname,
+	agent.province, agent.districts, agent.subdistricts, agent.zip_code, agent.Address, agent.Tel,
+    product.Name_product, lotproduct.Lot_ID, lotproduct.date_import, requisition.Amount_products
+    FROM requisition
+    INNER JOIN product ON product.ID_product = requisition.ID_product
+    INNER JOIN agent ON agent.ID_agent = requisition.ID_agent
+    INNER JOIN sales ON sales.ID_sales = requisition.ID_sales 
+    INNER JOIN lotproduct ON lotproduct.ID_lot = requisition.ID_lot 
+    WHERE Bill = ?
     `;
 
     const id = req.params.id;
@@ -409,6 +450,25 @@ export const Showlot = (req, res) => {
     const ID_lot = req.params.ID_lot;
 
     db.query(sql, [ID_lot], (err, dataRead) => {
+        if (err) {
+            return res.json({ Message: "Error inside server" });
+        }
+        return res.json(dataRead);
+    });
+};
+export const ShowBill = (req, res) => {
+    const sql = `SELECT  requisition.Bill , requisition.Dete_requisition, agent.fullname as agent_fullname, sales.fullname as sales_fullname,
+	agent.province, agent.districts, agent.subdistricts, agent.zip_code, agent.Address, agent.Tel
+    FROM requisition
+    INNER JOIN product ON product.ID_product = requisition.ID_product
+    INNER JOIN agent ON agent.ID_agent = requisition.ID_agent
+    INNER JOIN sales ON sales.ID_sales = requisition.ID_sales 
+    INNER JOIN lotproduct ON lotproduct.ID_lot = requisition.ID_lot 
+    WHERE Bill = ?`;
+
+    const Bill = req.params.Bill;
+
+    db.query(sql, [Bill], (err, dataRead) => {
         if (err) {
             return res.json({ Message: "Error inside server" });
         }

@@ -1,6 +1,7 @@
 import express from "express";
 import {selectlot, NameProduct, ShowProduct, addproductLOT, lot, Showlot, selectlotExpire, ShowProductTAB, selectTABImport,
-    ShowProductTABExport, ShowProductTABExport2, ShowProductImport, selectlotExport, addRequisition, Lotforproduct, lotUpdate, ShowProductLOT, BillOd, PR_LOTID} from "../controller/lot.js"
+    ShowProductTABExport, ShowProductTABExport2, ShowProductImport, selectlotExport, addRequisition, Lotforproduct, lotUpdate, ShowProductLOT,
+    ShowProductBill, BillOd, PR_LOTID, ShowBill} from "../controller/lot.js"
 
 const router = express.Router();
 
@@ -42,6 +43,8 @@ router.get("/ShowProductTABExport2/:idnamepr/:id",ShowProductTABExport2);
 
 //http://localhost:2001/ShowProductLOT/:id
 router.get("/ShowProductLOT/:id",ShowProductLOT);
+//http://localhost:2001/ShowProductBill/:id
+router.get("/ShowProductBill/:id",ShowProductBill);
 
 //http://localhost:2001/addproductLOT
 router.post("/addproductLOT",addproductLOT);
@@ -51,6 +54,8 @@ router.post("/addRequisition",addRequisition);
 
 //http://localhost:2001/Showlot/:ID_lot
 router.get("/Showlot/:ID_lot",Showlot);
+//http://localhost:2001/ShowBill/:Bill
+router.get("/ShowBill/:Bill",ShowBill);
 
 //http://localhost:2001/lotUpdate/:id
 router.put("/lotUpdate/:id",lotUpdate);
